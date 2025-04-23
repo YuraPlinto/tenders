@@ -6,6 +6,7 @@ namespace DoctrineMigrations;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
+use App\Entity\Status;
 
 /**
  * Заполнение таблицы Status
@@ -19,18 +20,32 @@ final class Version20250417163510 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql(<<<'SQL'
-            INSERT INTO status (name) VALUES
-                ('Открыто'),
-                ('Закрыто'),
-                ('Отменено')
-        SQL);
+        $sqlQuery = "INSERT INTO status (id, name) VALUES ";
+        $isFirstVal = true;
+        foreach (Status::STATUSES as $id => $name) {
+            if ($isFirstVal) {
+                $isFirstVal = false;
+            } else {
+                $sqlQuery .= ', ';
+            }
+            $sqlQuery .= \sprintf("('%s', '%s')", $id, $name);
+        }
+        $this->addSql($sqlQuery);
     }
 
     public function down(Schema $schema): void
     {
-        $this->addSql(<<<'SQL'
-            DELETE FROM status WHERE name IN ('Открыто', 'Закрыто', 'Отменено')
-        SQL);
+        $sqlQuery = "DELETE FROM status WHERE name IN (";
+        $isFirstVal = true;
+        foreach (Status::STATUSES as $id => $name) {
+            if ($isFirstVal) {
+                $isFirstVal = false;
+            } else {
+                $sqlQuery .= ', ';
+            }
+            $sqlQuery .= \sprintf("'%s'", $name);
+        }
+        $sqlQuery .= ')';
+        $this->addSql($sqlQuery);
     }
 }
