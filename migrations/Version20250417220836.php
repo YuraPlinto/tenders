@@ -22,7 +22,7 @@ final class Version20250417220836 extends AbstractMigration
         $this->addSql(<<<'SQL'
             CREATE TABLE tender (
                 id         INT AUTO_INCREMENT NOT NULL,
-                status_id  INT NOT NULL,
+                status_id  INT,
                 name       VARCHAR(255) NOT NULL,
                 updated_at DATETIME NOT NULL,
                 code       VARCHAR(255) NOT NULL,
