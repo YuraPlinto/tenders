@@ -35,7 +35,7 @@ class TenderRepository extends ServiceEntityRepository
 
        if (!\is_null($date)) {
            $queryBuilder
-               ->andWhere('t.updatedAt = :date')
+               ->andWhere('DATE(t.updatedAt) = DATE(:date)')
                ->setParameter('date', $date);
        }
 

@@ -17,8 +17,10 @@ class TendersController extends AbstractController
         TenderRepository $tenderRepository
     ): JsonResponse
     {
-        $dateTimeObj = new \DateTime($date);
-        $tenders = $tenderRepository->findTenders(name: $name, date: $dateTimeObj);
+        if (!\is_null($date)) {
+            $dateTimeObj = new \DateTime($date);
+        }
+        $tenders = $tenderRepository->findTenders(name: $name, date: $dateTimeObj ?? null);
         $tendersData = [];
         foreach ($tenders as $tender) {
             $tendersData[] = [
