@@ -6,13 +6,19 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Repository\TenderRepository;
+use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 
 class TendersController extends AbstractController
 {
     #[Route('/tenders', name: 'app_tenders')]
-    public function index(TenderRepository $tenderRepository): JsonResponse
+    public function index(
+        #[MapQueryParameter] string $name = null,
+        #[MapQueryParameter] string $date = null,
+        TenderRepository $tenderRepository
+    ): JsonResponse
     {
-        $tenders = $tenderRepository->findTenders();
+        $dateTimeObj = new \DateTime($date);
+        $tenders = $tenderRepository->findTenders(name: $name, date: $dateTimeObj);
         $tendersData = [];
         foreach ($tenders as $tender) {
             $tendersData[] = [
