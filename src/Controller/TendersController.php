@@ -39,4 +39,31 @@ class TendersController extends AbstractController
         $response->setEncodingOptions(JSON_UNESCAPED_UNICODE);
         return $response;
     }
+
+    #[Route('/tender/{number}', name: 'app_tender')]
+    public function show(
+        string $number,
+        TenderRepository $tenderRepository
+    ): JsonResponse
+    {
+        $responseData = [];
+
+        $tender = $tenderRepository->findOneBy(['number' => $number]);
+        if (!$tender) {
+            $responseData['error'] = "There isn't tender with number {$number}";
+        } else {
+            $tenderData = [
+                "Внешний код" => $tender->getCode(),
+                "Номер"       => $tender->getNumber(),
+                "Статус"      => !\is_null($tender->getStatus()) ? $tender->getStatus()->getName() : '',
+                "Название"    => $tender->getName(),
+                "Дата изм."   => $tender->getUpdatedAt()->format('Y-m-d H:i:s')
+            ];
+            $responseData['tender'] = $tenderData;
+        }
+
+        $response = new JsonResponse($responseData);
+        $response->setEncodingOptions(JSON_UNESCAPED_UNICODE);
+        return $response;
+    }
 }
