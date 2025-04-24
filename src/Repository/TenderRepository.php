@@ -28,8 +28,9 @@ class TenderRepository extends ServiceEntityRepository
         }
 
        if (!\is_null($name)) {
+           $name = '%' . $name . '%';
            $queryBuilder
-               ->andWhere('t.name = :name')
+               ->andWhere('t.name LIKE :name')
                ->setParameter('name', $name);
        }
 
