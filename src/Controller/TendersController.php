@@ -33,6 +33,7 @@ class TendersController extends AbstractController
         }
 
         $response = new JsonResponse([
+            'tendersQuantity' => \count($tendersData),
             'tenders' => $tendersData
         ]);
         $response->setEncodingOptions(JSON_UNESCAPED_UNICODE);
