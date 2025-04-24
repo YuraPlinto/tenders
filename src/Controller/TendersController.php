@@ -10,7 +10,7 @@ use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 
 class TendersController extends AbstractController
 {
-    #[Route('/tenders', name: 'app_tenders')]
+    #[Route('/tenders', name: 'app_tenders', methods: ['GET'])]
     public function index(
         #[MapQueryParameter] string $name = null,
         #[MapQueryParameter] string $date = null,
@@ -40,7 +40,7 @@ class TendersController extends AbstractController
         return $response;
     }
 
-    #[Route('/tender/{number}', name: 'app_tender')]
+    #[Route('/tender/{number}', name: 'app_tender', methods: ['GET'])]
     public function show(
         string $number,
         TenderRepository $tenderRepository
