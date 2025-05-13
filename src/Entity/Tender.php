@@ -5,8 +5,17 @@ namespace App\Entity;
 use App\Repository\TenderRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: TenderRepository::class)]
+#[UniqueEntity(
+    fields: ['code'],
+    message: 'Not unique code.'
+)]
+#[UniqueEntity(
+    fields: ['number'],
+    message: 'Not unique number.'
+)]
 class Tender
 {
     #[ORM\Id]
